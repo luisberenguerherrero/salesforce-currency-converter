@@ -5,5 +5,6 @@
     "**/bower_components": true,
     "**/.sfdx": true
   },
-  "salesforcedx-vscode-core.orgBrowser.enabled": true
+  "salesforcedx-vscode-core.orgBrowser.enabled": true,
+  "eslint.nodePath": "c:\\Users\\luis.berenguer.exter\\.vscode\\extensions\\salesforce.salesforcedx-vscode-lwc-46.11.0\\node_modules"
 }

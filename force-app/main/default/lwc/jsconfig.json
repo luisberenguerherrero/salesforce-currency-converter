@@ -1,6 +1,15 @@
 {
     "compilerOptions": {
-        "experimentalDecorators": true
+        "experimentalDecorators": true,
+        "baseUrl": ".",
+        "paths": {
+            "c/bitcoinToUSD": [
+                "bitcoinToUSD/bitcoinToUSD.js"
+            ],
+            "c/createOpportunities": [
+                "createOpportunities/createOpportunities.js"
+            ]
+        }
     },
     "include": [
         "**/*",
