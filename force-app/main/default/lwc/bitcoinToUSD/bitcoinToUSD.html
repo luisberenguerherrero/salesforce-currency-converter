@@ -1,8 +1,31 @@
 <template>
-    <div if:true={oneBitcoinUSDValue}>
-        Valor: {oneBitcoinUSDValue}
-    </div>
-    <div if:true={error}>
-        FATAL ERROR: {error}
-    </div>
+
+    <lightning-card variant="Narrow">
+        <div if:true={oneBitcoinUSDValue} class="container">
+            <div class="slds-align_absolute-center header">
+                <div class="slds-text-heading_small slds-m-vertical_x-small custom_rem_title">BITCOIN VALUE: {oneBitcoinUSDValue} $</div>
+                <div class="slds-text-title slds-m-vertical_x-small">Last value update at {lastUpdatedDate}</div>
+            </div>
+            <div class="slds-align_absolute-center">
+                <div class="slds-form-element slds-m-horizontal_medium">
+                    <label class="slds-form-element__label custom_rem_label" for="input_bitcoin">Bitcoin value</label>
+                    <div class="slds-form-element__control">
+                        <input type="number" id="input_bitcoin" class="slds-input" step="0.000001"
+                            value={bitcoinValue} onkeyup={handleBitcoinChange} onchange={handleBitcoinChange} />
+                    </div>
+                </div>
+                <div class="slds-text-heading_large" style="align-self: flex-end;">=</div>
+                <div class="slds-form-element slds-m-horizontal_medium">
+                    <label class="slds-form-element__label custom_rem_label" for="input_usd">USD value</label>
+                    <div class="slds-form-element__control">
+                        <input type="number" id="input_usd" class="slds-input" step="0.01"
+                            value={usdValue} onkeyup={handleUSDChange} onchange={handleUSDChange} />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div if:true={error}>
+            FATAL ERROR: {error}
+        </div>
+    </lightning-card>
 </template>

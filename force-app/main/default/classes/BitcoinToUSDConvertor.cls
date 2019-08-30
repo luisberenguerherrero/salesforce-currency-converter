@@ -3,6 +3,7 @@
  */
  public class BitcoinToUSDConvertor{ 
  
+    static final String CURRENCY_NAME = 'USD';
     @TestVisible private Decimal ValueOfOneBitcoinInUSD;
     
     /**
@@ -10,6 +11,10 @@
      */
     public BitcoinToUSDConvertor(){ 
         ValueOfOneBitcoinInUSD=getValueFromBitpay();
+
+        /*We save the value in the database for future cases where the webservice is not working, so we can use the last
+        value retrieved form Bitpay*/
+        saveValue(ValueOfOneBitcoinInUSD);
     }
 
     /**
@@ -38,8 +43,7 @@
 
         res = sendRequest(req);
         Map<String, Decimal> exchangeRatesMap=ExchangeRate.parseToMap(res.getBody());
-
-        return exchangeRatesMap.get('USD');
+        return exchangeRatesMap.get(CURRENCY_NAME);
     }
 
     /**
@@ -79,5 +83,28 @@
             throw ex;
         }
         return res;
+    }
+
+    /**
+     * saveValue Persist the currency value for recovery uses (when the webservice is not working)
+     * @param currency The currency to be saved
+     * @param value The value of the currency
+     */
+    @AuraEnabled
+    public static void saveValue(Decimal value){
+        try{
+            Bitcoin_Exchange_Rate__c ber=[SELECT Id, Name, Value__c FROM Bitcoin_Exchange_Rate__c WHERE Name=:CURRENCY_NAME];
+            ber.Value__c=value;
+            update ber;
+        }catch(Exception e){
+            Bitcoin_Exchange_Rate__c ber=new Bitcoin_Exchange_Rate__c(Name=CURRENCY_NAME, Value__c=value);
+            insert ber;
+        }
+    }
+
+    @AuraEnabled
+    public static Bitcoin_Exchange_Rate__c getValueFromDatabase(){
+        Bitcoin_Exchange_Rate__c ber=[SELECT Id, LastModifiedDate, Value__c FROM Bitcoin_Exchange_Rate__c WHERE Name=:CURRENCY_NAME];
+        return ber;
     }
 }
