@@ -10,7 +10,7 @@
                 <div class="slds-form-element slds-m-horizontal_medium">
                     <label class="slds-form-element__label custom_rem_label" for="input_bitcoin">Bitcoin value</label>
                     <div class="slds-form-element__control">
-                        <input type="number" id="input_bitcoin" class="slds-input" step="0.000001"
+                        <input type="text" id="input_bitcoin" class="slds-input"
                             value={bitcoinValue} onkeyup={handleBitcoinChange} onchange={handleBitcoinChange} />
                     </div>
                 </div>
@@ -18,7 +18,7 @@
                 <div class="slds-form-element slds-m-horizontal_medium">
                     <label class="slds-form-element__label custom_rem_label" for="input_usd">USD value</label>
                     <div class="slds-form-element__control">
-                        <input type="number" id="input_usd" class="slds-input" step="0.01"
+                        <input type="text" id="input_usd" class="slds-input"
                             value={usdValue} onkeyup={handleUSDChange} onchange={handleUSDChange} />
                     </div>
                 </div>

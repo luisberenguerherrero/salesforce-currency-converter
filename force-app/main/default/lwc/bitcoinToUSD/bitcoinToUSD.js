@@ -35,26 +35,15 @@ export default class BitcoinToUSD extends LightningElement {
   @track lastUpdatedDate;
 
   handleUSDChange(event) {
-    console.log(event.target);
-    let usdInput = event.target.value;
-    console.log(usdInput.length);
-    console.log(usdInput[usdInput.length-1]);
-    if(usdInput.length===0){this.bitcoinValue=0;this.usdValue='';}
-    else if(usdInput[usdInput.length-1] >= '0' && usdInput[usdInput.length-1] <= '9'){
-      this.usdValue = usdInput;
-      this.bitcoinValue = Math.round((usdInput / this.oneBitcoinUSDValue)*1000000)/1000000;
-    }
+    this.usdValue=event.target.value;
+    let usdNumber=this.usdValue.length===0?0:parseFloat(event.target.value.replace(',', '.'));
+    this.bitcoinValue = Math.round((usdNumber / this.oneBitcoinUSDValue)*1000000)/1000000;
   }
 
   handleBitcoinChange(event) {
-    let bitcoinInput = event.target.value;
-    console.log(bitcoinInput.length);
-    console.log(bitcoinInput[bitcoinInput.length-1]);
-    if(bitcoinInput.length===0){this.usdValue=0;this.bitcoinValue='';}
-    else if(bitcoinInput[bitcoinInput.length-1] >= '0' && bitcoinInput[bitcoinInput.length-1] <= '9'){
-      this.bitcoinValue = bitcoinInput;
-      this.usdValue = Math.round(bitcoinInput * this.oneBitcoinUSDValue * 100) / 100;
-    }
+    this.bitcoinValue=event.target.value;
+    let bitcoinNumber=this.bitcoinValue.length===0?0:parseFloat(event.target.value.replace(',', '.'));
+    this.usdValue = Math.round(bitcoinNumber * this.oneBitcoinUSDValue * 100) / 100;
   }
 
   get oneUSDBitcoinValue() {
