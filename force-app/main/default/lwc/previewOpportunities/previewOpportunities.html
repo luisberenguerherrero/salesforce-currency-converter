@@ -1,0 +1,118 @@
+<template>
+    <table aria-multiselectable="true"
+        class="slds-table slds-no-row-hover slds-table_bordered slds-table_fixed-layout slds-table_resizable-cols"
+        role="grid">
+        <thead>
+            <tr class="slds-line-height_reset">
+                <th aria-label="Opportunity Name" aria-sort="none" scope="col" style="width:40%">
+                    <div
+                        class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate slds-m-vertical_xx-small">
+                        <span class="slds-truncate" title="Opportunity Name">Opportunity Name</span>
+
+                    </div>
+                </th>
+                <th aria-label="Account" aria-sort="none" scope="col" style="width:20%">
+                    <div
+                        class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate slds-m-vertical_xx-small">
+                        <span class="slds-truncate" title="Account">Account</span>
+
+                    </div>
+                </th>
+                <th aria-label="Amount" aria-sort="none" scope="col" style="width:10%">
+                    <div
+                        class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate slds-m-vertical_xx-small">
+                        <span class="slds-truncate" title="Amount">Amount</span>
+
+                    </div>
+                </th>
+                <th aria-label="Stage" aria-sort="none" scope="col" style="width:10%">
+                    <div
+                        class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate slds-m-vertical_xx-small">
+                        <span class="slds-truncate" title="Stage">Stage</span>
+                    </div>
+                </th>
+                <th aria-label="Closed Date" aria-sort="none" scope="col" style="width:10%">
+                    <div
+                        class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate slds-m-vertical_xx-small">
+                        <span class="slds-truncate" title="Closed Date">Closed Date</span>
+                    </div>
+                </th>
+                <th class="" scope="col" style="width:3.75rem"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr aria-selected="false" class="slds-hint-parent">
+
+                <th scope="row">
+                    <div class="slds-truncate" title="Analytics">New auto opportunity create for Samsung SL</div>
+                </th>
+                <td role="gridcell">
+                    <div class="slds-truncate" title="ANTLY">ANTLY</div>
+                </td>
+                <td role="gridcell">
+                    <div class="slds-truncate" title="5000.00">5000.00</div>
+                </td>
+                <td role="gridcell">
+                    <div class="slds-truncate" title="Analytics Product">Analytics Product
+                    </div>
+                </td>
+                <td role="gridcell">
+                    <div class="slds-truncate" title="Analytics Product">Analytics Product
+                    </div>
+                </td>
+                <td class="slds-text-align_right" role="gridcell" tabindex="0">
+                    <lightning-button-icon icon-name="utility:close" alternative-text="Delete"
+                        class="slds-m-left_xx-small"></lightning-button-icon>
+                </td>
+            </tr>
+            <tr aria-selected="false" class="slds-hint-parent">
+
+                <th scope="row">
+                    <div class="slds-truncate" title="Analytics">Analytics</div>
+                </th>
+                <td role="gridcell">
+                    <div class="slds-truncate" title="ANTLY">ANTLY</div>
+                </td>
+                <td role="gridcell">
+                    <div class="slds-truncate" title="5000.00">5000.00</div>
+                </td>
+                <td role="gridcell">
+                    <div class="slds-truncate" title="Analytics Product">Analytics Product
+                    </div>
+                </td>
+                <td role="gridcell">
+                    <div class="slds-truncate" title="Analytics Product">Analytics Product
+                    </div>
+                </td>
+                <td class="slds-text-align_right" role="gridcell" tabindex="0">
+                    <lightning-button-icon icon-name="utility:close" alternative-text="Delete"
+                        class="slds-m-left_xx-small"></lightning-button-icon>
+                </td>
+            </tr>
+            <tr aria-selected="false" class="slds-hint-parent">
+                <th scope="row">
+                    <div class="slds-truncate" title="Analytics">Analytics</div>
+                </th>
+                <td role="gridcell">
+                    <div class="slds-truncate" title="ANTLY">ANTLY</div>
+                </td>
+                <td role="gridcell">
+                    <div class="slds-truncate" title="5000.00">5000.00</div>
+                </td>
+                <td role="gridcell">
+                    <div class="slds-truncate" title="Analytics Product">Analytics Product
+                    </div>
+                </td>
+                <td role="gridcell">
+                    <div class="slds-truncate" title="Analytics Product">Analytics Product
+                    </div>
+                </td>
+                <td class="slds-text-align_right" role="gridcell" tabindex="0">
+                    <lightning-button-icon icon-name="utility:close" alternative-text="Delete"
+                        class="slds-m-left_xx-small"></lightning-button-icon>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <lightning-button variant="brand" label="Create Opportunities" title="Create Opportunities" onclick={handleClick} class="slds-m-left_x-small slds-m-top_large slds-float_right"></lightning-button>
+</template>
