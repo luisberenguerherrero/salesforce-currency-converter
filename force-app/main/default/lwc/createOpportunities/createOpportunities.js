@@ -1,36 +1,21 @@
-import { LightningElement, track, wire } from "lwc";
-import getAccounts from "@salesforce/apex/CreateOpportunitiesController.getAccounts";
-
-const accountsPerPage = 5;
-const columns = [{ label: "Account Name", fieldName: "Name" }];
+import { LightningElement, track } from "lwc";
 
 export default class CreateOpportunities extends LightningElement {
-  columns = columns;
   @track page = 1;
   @track selectedAccountsMap = new Map();
+  @track selectedRows = [];
+  @track selectedAccounts = [];
+
+  @track paginating = false;
+
+  @track pageSnapshot = [];
   @track querySearch;
   @track accounts = [];
   @track number_pages;
 
   @track opportunityData = {};
 
-  @wire(getAccounts, {
-    page: '$page',
-    recordsPerPage: accountsPerPage,
-    querySearch: ''
-  })
-  wiredValue({ error, data }) {
-    if (data) {
-      this.accounts = data.accounts;
-      this.number_pages = data.number_pages;
-    } else if (error) {
-      console.error(error);
-    }
-  }
-
-  @track selectedRows = [];
-  @track selectedAccounts = [];
-/*   get selectedRows() {
+  /*   get selectedRows() {
      console.log('Selected rows: ' + [...this.selectedAccountsMap.keys()]);
    return [...this.selectedAccountsMap.keys()];
   }
@@ -47,55 +32,30 @@ export default class CreateOpportunities extends LightningElement {
     this.opportunityData[name] = value;
   }
 
+  handleUpdateEvent(event) {
+    /*     console.log(JSON.parse(JSON.stringify([...event.detail.map.keys()])));
+    console.log(JSON.parse(JSON.stringify(event.detail.selectedAccounts)));
+ */ console.log(
+      "Updating the map"
+    );
+    this.selectedAccountsMap = event.detail.map;
+    this.selectedAccounts = event.detail.selectedAccounts;
+  }
+
   handleRemoveEvent(event) {
     console.log("Remove account from child component with id " + event.detail);
-    this.selectedAccountsMap.delete(event.detail);
-    this.selectedRows=[...this.selectedAccountsMap.keys()];
-    this.selectedAccounts=[...this.selectedAccountsMap.values()];
+    let map = new Map(this.selectedAccountsMap);
+    console.log(JSON.parse(JSON.stringify([...map.keys()])));
+    map.delete(event.detail);
+    console.log(JSON.parse(JSON.stringify([...map.keys()])));
+    this.selectedAccountsMap = map;
+    this.selectedRows = [...this.selectedAccountsMap.keys()];
+    this.selectedAccounts = [...this.selectedAccountsMap.values()];
   }
 
-  selectAccount(event) {
-    const selectedRows = event.detail.selectedRows;
-    // Display that fieldName of the selected rows
-    let mapSelecteds = new Map();
-    for (const row of selectedRows) {
-
-        console.log("Selected "+row.Name+" with id " + row.Id);
-        let selectedAccount = this.accounts.find(
-          x => x.Id === row.Id
-        );
-        mapSelecteds.set(selectedAccount.Id, selectedAccount);
-        console.log(this.selectedAccountsMap.size);
-
-    }
-    this.selectedAccountsMap=mapSelecteds;
-    this.selectedRows=[...this.selectedAccountsMap.keys()];
-    this.selectedAccounts=[...this.selectedAccountsMap.values()];
-    console.log(JSON.parse(JSON.stringify(this.selectedAccounts)));
-  }
-
-  removeSelectedAccount(event) {
+  /*   removeSelectedAccount(event) {
     console.log("Remove account with id " + event.target.dataset.item);
     this.selectedAccountsMap.delete(event.target.dataset.item);
   }
-
-  first() {
-    this.page = 1;
-  }
-  back() {
-    this.page--;
-  }
-  next() {
-    this.page++;
-  }
-  last() {
-    this.page = this.number_pages;
-  }
-
-  get disabledBackwardButtons() {
-    return this.page === 1;
-  }
-  get disabledForwardButtons() {
-    return this.page === this.number_pages;
-  }
+ */
 }

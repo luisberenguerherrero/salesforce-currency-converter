@@ -1,0 +1,63 @@
+<template>
+  <div class="slds-p-horizontal_medium">
+    <div class="slds-text-heading_medium">
+      2. Select for which accounts create opportunities
+    </div>
+    <div class="slds-m-top_medium manage_table">
+      <lightning-input
+        placeholder="Filter this list"
+        variant="label-hidden"
+      ></lightning-input>
+      <lightning-layout vertical-align="center">
+        <lightning-layout-item>
+          <lightning-button
+            label="1"
+            onclick={first}
+            disabled={disabledBackwardButtons}
+          >
+          </lightning-button>
+        </lightning-layout-item>
+        <lightning-layout-item>
+          <lightning-button-icon
+            icon-name="utility:chevronleft"
+            alternative-text="Settings"
+            onclick={back}
+            disabled={disabledBackwardButtons}
+          ></lightning-button-icon>
+        </lightning-layout-item>
+        <lightning-layout-item
+          ><span class="slds-m-around_small" style="font-size:14px"
+            >{page}</span
+          ></lightning-layout-item
+        >
+        <lightning-layout-item>
+          <lightning-button-icon
+            icon-name="utility:chevronright"
+            alternative-text="Settings"
+            onclick={next}
+            disabled={disabledForwardButtons}
+          ></lightning-button-icon>
+        </lightning-layout-item>
+        <lightning-layout-item>
+          <lightning-button
+            label={number_pages}
+            icon-position="right"
+            onclick={last}
+            disabled={disabledForwardButtons}
+          ></lightning-button>
+        </lightning-layout-item>
+      </lightning-layout>
+    </div>
+    <div>
+      <lightning-datatable
+        key-field="Id"
+        data={accounts}
+        columns={columns}
+        selected-rows={selectedRows}
+        onrowselection={selectAccount}
+        resize-column-disabled
+      >
+      </lightning-datatable>
+    </div>
+  </div>
+</template>

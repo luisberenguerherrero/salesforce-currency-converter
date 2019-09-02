@@ -11,6 +11,9 @@
             ],
             "c/previewOpportunities": [
                 "previewOpportunities/previewOpportunities.js"
+            ],
+            "c/accountList": [
+                "accountList/accountList.js"
             ]
         }
     },
