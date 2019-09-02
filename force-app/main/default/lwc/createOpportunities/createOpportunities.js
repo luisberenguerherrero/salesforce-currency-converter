@@ -1,61 +1,68 @@
-import { LightningElement, track } from "lwc";
+import { LightningElement, track, wire } from "lwc";
+import { getPicklistValues } from "lightning/uiObjectInfoApi";
+import { getObjectInfo } from "lightning/uiObjectInfoApi";
+import OPPORTUNITY_OBJECT from "@salesforce/schema/Opportunity";
+import STAGE_FIELD from "@salesforce/schema/Opportunity.StageName";
 
 export default class CreateOpportunities extends LightningElement {
-  @track page = 1;
   @track selectedAccountsMap = new Map();
-  @track selectedRows = [];
   @track selectedAccounts = [];
-
-  @track paginating = false;
-
-  @track pageSnapshot = [];
-  @track querySearch;
-  @track accounts = [];
-  @track number_pages;
-
   @track opportunityData = {};
 
-  /*   get selectedRows() {
-     console.log('Selected rows: ' + [...this.selectedAccountsMap.keys()]);
-   return [...this.selectedAccountsMap.keys()];
-  }
-  get selectedAccounts() {
-    console.log('Selected accounts: ' + [...this.selectedAccountsMap.values()]);
-    return [...this.selectedAccountsMap.values()];
-  } */
+  @track opportunityData = {};
+  @track stage;
+  @track date;
 
-  handleChange(event) {
-    let name = event.target.name;
+  @wire(getObjectInfo, { objectApiName: OPPORTUNITY_OBJECT })
+  objectInfo;
+
+  @wire(getPicklistValues, {
+    recordTypeId: "$objectInfo.data.defaultRecordTypeId",
+    fieldApiName: STAGE_FIELD
+  })
+  StagePicklistValues;
+
+  handleAmount(event) {
     let value = event.target.value;
-    console.log("Name: " + name);
-    console.log("Value: " + value);
-    this.opportunityData[name] = value;
+    let data = { ...this.opportunityData };
+    data.amount = value;
+    this.opportunityData = data;
+  }
+  handleStage(event) {
+    let value = event.target.value;
+    let data = { ...this.opportunityData };
+    data.stage = value;
+    this.opportunityData = data;
+  }
+  handleDate(event) {
+    let value = event.target.value;
+    let data = { ...this.opportunityData };
+    data.date = value;
+    this.opportunityData = data;
   }
 
   handleUpdateEvent(event) {
-    /*     console.log(JSON.parse(JSON.stringify([...event.detail.map.keys()])));
-    console.log(JSON.parse(JSON.stringify(event.detail.selectedAccounts)));
- */ console.log(
-      "Updating the map"
-    );
     this.selectedAccountsMap = event.detail.map;
     this.selectedAccounts = event.detail.selectedAccounts;
   }
 
   handleRemoveEvent(event) {
-    console.log("Remove account from child component with id " + event.detail);
+    //console.log("Remove account from child component with id " + event.detail);
     let map = new Map(this.selectedAccountsMap);
-    console.log(JSON.parse(JSON.stringify([...map.keys()])));
-    map.delete(event.detail);
-    console.log(JSON.parse(JSON.stringify([...map.keys()])));
+    for (const id of event.detail) {
+      map.delete(id);
+    }
     this.selectedAccountsMap = map;
     this.selectedRows = [...this.selectedAccountsMap.keys()];
     this.selectedAccounts = [...this.selectedAccountsMap.values()];
   }
 
-  /*   removeSelectedAccount(event) {
-    console.log("Remove account with id " + event.target.dataset.item);
-    this.selectedAccountsMap.delete(event.target.dataset.item);
+  get stylePreview() {
+    let height = window.innerHeight - 500;
+    return `height: ${height}px; min-height: 400px`;
   }
- */
+  get stylePreviewChild() {
+    let height = window.innerHeight - 600;
+    return `height: ${height}px; min-height: 300px`;
+  }
 }

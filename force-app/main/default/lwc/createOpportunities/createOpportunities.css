@@ -13,4 +13,8 @@
 .down_row {
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
+}
+c-preview-opportunities {
+  flex-grow: 2;
 }

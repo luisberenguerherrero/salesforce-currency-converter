@@ -1,0 +1,9 @@
+.container_body {
+  background-color: white;
+  overflow-y: scroll;
+}
+.status {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

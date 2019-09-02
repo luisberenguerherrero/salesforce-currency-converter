@@ -6,7 +6,34 @@
           <div class="slds-text-heading_medium">
             1. Select the opportunity data
           </div>
-          <lightning-input
+          <lightning-record-edit-form object-api-name="Opportunity">
+            <div class="slds-m-around_medium">
+              <lightning-input
+                type="number"
+                label="Amount"
+                formatter="currency"
+                step="0.01"
+                onchange={handleAmount}
+                required
+              ></lightning-input>
+              <template if:true={StagePicklistValues.data}>
+                <lightning-combobox
+                  label="Stage"
+                  placeholder="Select Stage"
+                  options={StagePicklistValues.data.values}
+                  onchange={handleStage}
+                  required
+                ></lightning-combobox>
+              </template>
+              <lightning-input
+                type="date"
+                label="Close Date"
+                onchange={handleDate}
+                required
+              ></lightning-input>
+            </div>
+          </lightning-record-edit-form>
+          <!-- <lightning-input
             label="Amount"
             class="slds-m-top_medium"
             name="amount"
@@ -23,7 +50,7 @@
             class="slds-m-top_medium"
             name="date"
             onchange={handleChange}
-          ></lightning-input>
+          ></lightning-input> -->
         </div>
         <c-account-list
           selected-accounts-map={selectedAccountsMap}
@@ -31,7 +58,10 @@
         >
         </c-account-list>
       </div>
-      <div class="row down_row slds-m-top_large slds-align_absolute-center">
+      <div
+        class="row down_row slds-m-top_large slds-align_absolute-center"
+        style={stylePreview}
+      >
         <div class="slds-text-heading_medium slds-m-bottom_medium">
           3. Preview and create opportunities
         </div>
@@ -41,6 +71,7 @@
         <c-preview-opportunities
           opportunity-data={opportunityData}
           accounts={selectedAccounts}
+          style-preview={stylePreviewChild}
           onremove={handleRemoveEvent}
         ></c-preview-opportunities>
       </div>

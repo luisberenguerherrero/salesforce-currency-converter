@@ -36,6 +36,7 @@ public with sharing class CreateOpportunitiesController {
                 }
                 insertResult.error=error;
             }
+            response.add(insertResult);
         }
         return response;
     }
@@ -47,8 +48,8 @@ public with sharing class CreateOpportunitiesController {
     }
 
     public class InsertResponse{
-        Id id;
-        Boolean success;
-        String error;
+        @AuraEnabled public Id id;
+        @AuraEnabled public Boolean success;
+        @AuraEnabled public String error;
     }
 }
