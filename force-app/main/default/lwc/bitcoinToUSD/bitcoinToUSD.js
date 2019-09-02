@@ -4,6 +4,7 @@ import getOneBitcoinUSDValueFromDatabase from "@salesforce/apex/BitcoinToUSDConv
 import saveCurrencyValue from "@salesforce/apex/BitcoinToUSDConvertor.saveValue";
 
 export default class BitcoinToUSD extends LightningElement {
+  //First we try to get the latest USD value from the Bitpay service
   @wire(getOneBitcoinUSDValueFromBitpay)
   wiredValue({ error, data }) {
     if (data) {
@@ -12,7 +13,10 @@ export default class BitcoinToUSD extends LightningElement {
       this.lastUpdatedDate=new Date().toLocaleString();
       this.saveData();
       this.error = undefined;
-    } else if (error) {
+    } 
+    /** If an error occurs, we retrieve the latest value retrieved successfully from Bitpay,
+    in order to give the user a recovery solution*/
+    else if (error) {
       getOneBitcoinUSDValueFromDatabase().then(result=>{
         this.oneBitcoinUSDValue = result.Value__c;
         this.usdValue=this.oneBitcoinUSDValue;

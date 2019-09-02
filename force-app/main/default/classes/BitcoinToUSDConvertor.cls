@@ -47,7 +47,7 @@
     }
 
     /**
-     * updateAccountRevenueInBitcoins Asynchronous method to be called from the Account Trigger to update the Annual Revenue in Bitcoin value of the accounts in the Set
+     * updateAccountRevenueInBitcoins Asynchronous method to be called from the Account Trigger to update the Annual Revenue in Bitcoin value of the accounts in the accountIds parameter
      * @param accountIds accountIds Accounts where the Annual Revenue in Bitcoin needs to be updated
      */
     @future(callout=true)
@@ -55,9 +55,19 @@
         Decimal valueOfBitcoinInUSD=getValueFromBitpay();
         List<Account> accounts=[SELECT Id, AnnualRevenue, Annual_Revenue_in_Bitcoin__c FROM Account WHERE Id in :accountIds];
         for(Account a:accounts){
-            a.Annual_Revenue_in_Bitcoin__c=a.AnnualRevenue/valueOfBitcoinInUSD;
+            try{
+                a.Annual_Revenue_in_Bitcoin__c=a.AnnualRevenue/valueOfBitcoinInUSD;
+            }catch(Exception e){
+                AssignmentException ex=new AssignmentException('Error calculating the Annual Revenue in Bitcoin: '+e.getMessage());
+                throw ex;
+            }
         }
-        update accounts;
+        try{
+            update accounts;
+        }catch(DmlException e){
+            AssignmentException ex=new AssignmentException('Error updating the Accounts with the Annual Revenue in Bitcoin field: '+e.getMessage());
+            throw ex;
+        }
     }
 
     /**
@@ -102,6 +112,10 @@
         }
     }
 
+    /**
+     * getValueFromDatabase Retrieves the Value of the currency defined in CURRENCY_NAME
+     * @return Returns a record of the Bitcoin_Exchange_Rate__c sObject
+     */
     @AuraEnabled
     public static Bitcoin_Exchange_Rate__c getValueFromDatabase(){
         Bitcoin_Exchange_Rate__c ber=[SELECT Id, LastModifiedDate, Value__c FROM Bitcoin_Exchange_Rate__c WHERE Name=:CURRENCY_NAME];

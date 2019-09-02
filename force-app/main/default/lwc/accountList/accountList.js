@@ -13,7 +13,7 @@ export default class AccountList extends LightningElement {
   querySearch = '';
   @track selectedRows = [];
   accounts = [];
-  number_pages;
+  number_pages = 1;
   @track loading=true;
 
   inputValue;

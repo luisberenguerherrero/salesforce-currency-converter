@@ -77,6 +77,6 @@ export default class CreateOpportunities extends LightningElement {
   }
   get stylePreviewChild() {
     let height = window.innerHeight - 600;
-    return `height: ${height}px; min-height: 300px`;
+    return `height: ${height}px; min-height: 250px`;
   }
 }

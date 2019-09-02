@@ -1,8 +1,16 @@
+/**
+ * Handler class for the Account trigger. In this class we manage the
+ * trigger recursivity and the desired trigger logic
+ */
 public with sharing class AccountTriggerHandler {
     //Trigger execution check variable
     public static Boolean runOnce = true;
 
-    //On after insert
+    /**
+     * onAfterInsert Here we iterate the inserted accounts and call to updateAccountRevenueInBitcoins
+     * to update the Annual_Revenue_in_Bitcoin__c field on the desired accounts
+     * @param newMapAccount Map from the trigger with the inserted accounts
+     */
     public void onAfterInsert(Map<Id, Account> newMapAccount){
         AccountTriggerHandler.runOnce = false;
 
@@ -21,7 +29,12 @@ public with sharing class AccountTriggerHandler {
         AccountTriggerHandler.runOnce = true;
     }
           
-    //On after update
+    /**
+     * onAfterUpdate Here we iterate the updated accounts and call to updateAccountRevenueInBitcoins
+     * to update the Annual_Revenue_in_Bitcoin__c field on the desired accounts
+     * @param newMapAccount Map from the trigger with the values of the updated accounts
+     * @param oldMapAccount Map from the trigger with the previous values of the updated accounts
+     */
     public void onAfterUpdate(Map<Id, Account> newMapAccount, Map<Id, Account> oldMapAccount){
         AccountTriggerHandler.runOnce = false;
 
