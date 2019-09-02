@@ -92,6 +92,10 @@ export default class PreviewOpportunities extends LightningElement {
     this.showPopup = false;
   }
 
+/*   get hasOpportunitiesPreview(){
+    return this.opportunitiesPreview && this.opportunitiesPreview.length>0;
+  }
+ */
   get errorMessage() {
     if (this.errors === 0) {
       return false;

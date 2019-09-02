@@ -14,7 +14,8 @@
                             value={bitcoinValue} onkeyup={handleBitcoinChange} onchange={handleBitcoinChange} />
                     </div>
                 </div>
-                <div class="slds-text-heading_large" style="align-self: flex-end;">=</div>
+                <div class="slds-text-heading_large slds-m-right_medium slds-m-bottom_xx-small currency_text">BTC</div>
+                <div class="slds-text-heading_large slds-m-bottom_xx-small currency_text">=</div>
                 <div class="slds-form-element slds-m-horizontal_medium">
                     <label class="slds-form-element__label custom_rem_label" for="input_usd">USD value</label>
                     <div class="slds-form-element__control">
@@ -22,6 +23,7 @@
                             value={usdValue} onkeyup={handleUSDChange} onchange={handleUSDChange} />
                     </div>
                 </div>
+                <div class="slds-text-heading_large slds-m-right_medium slds-m-bottom_xx-small currency_text">USD</div>
             </div>
         </div>
         <div if:true={error}>
