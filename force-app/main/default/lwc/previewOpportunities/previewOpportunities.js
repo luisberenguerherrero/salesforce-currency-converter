@@ -6,6 +6,7 @@ export default class PreviewOpportunities extends LightningElement {
   @track saveResults = [];
   errors = 0;
   successes = 0;
+  errorMessages = new Map();
   @track showPopup = false;
   @api
   get opportunityData() {
@@ -21,7 +22,6 @@ export default class PreviewOpportunities extends LightningElement {
   get accounts() {
     return this._accounts;
   }
-  //Every time new parameters are received, we load Policies from the ICVC
   set accounts(value) {
     this._accounts = value;
     this.loadPreviewOpportunities();
@@ -36,7 +36,8 @@ export default class PreviewOpportunities extends LightningElement {
           Name: "New auto opportunity created for " + account.Name,
           Amount: this.opportunityData.amount,
           StageName: this.opportunityData.stage,
-          CloseDate: this.opportunityData.date
+          CloseDate: this.opportunityData.date,
+          ErrorMessage: this.errorMessages.get(account.Id)
         });
       }
       this.opportunitiesPreview = newOpportunities;
@@ -51,7 +52,8 @@ export default class PreviewOpportunities extends LightningElement {
   }
 
   handleClick() {
-    saveOpportunities({ opportunities: this.opportunitiesPreview })
+    if(!this.emptyParams){
+      saveOpportunities({ opportunities: this.opportunitiesPreview })
       .then(result => {
         this.saveResults = result;
         const errorData = result.filter(x => !x.success);
@@ -64,27 +66,24 @@ export default class PreviewOpportunities extends LightningElement {
       .catch(error => {
         console.error(error);
       });
-    //handle creation
-    //on creation, show a pop up with details (% on success inserts, and fail details)
-    //on close pop up, remain bad insertions with their error message and a button to retry insert
-    //if all success, empty selected accounts
+    }
+    else{
+      const validate = new CustomEvent("validate");
+      this.dispatchEvent(validate);
+    }
   }
 
   onClosePopup() {
-    let errorPreview = [];
     let successPreview = [];
     // eslint-disable-next-line guard-for-in
     for (const i in this.saveResults) {
-      let row = this.opportunitiesPreview[i];
       if (!this.saveResults[i].success) {
-        row.error = this.saveResults[i].error;
-        errorPreview.push(row);
+        this.errorMessages.set(this.opportunitiesPreview[i].AccountId, this.saveResults[i].error);
       } else if (this.saveResults[i].success) {
         successPreview.push(this.opportunitiesPreview[i].AccountId);
+        this.errorMessages.delete(this.opportunitiesPreview[i].AccountId);
       }
     }
-    this.opportunitiesPreview = errorPreview;
-
     const removeEvent = new CustomEvent("remove", {
       detail: successPreview
     });
@@ -109,6 +108,10 @@ export default class PreviewOpportunities extends LightningElement {
       return "1 Opportunity created successfully";
     }
     return `${this.successes} Opportunities created successfully`;
+  }
+  
+  get emptyParams(){
+    return ((this.opportunityData.amount==='' || !this.opportunityData.amount) || (this.opportunityData.stage==='' || !this.opportunityData.stage) || (this.opportunityData.date==='' || !this.opportunityData.date));
   }
 
   get emptyAccounts() {

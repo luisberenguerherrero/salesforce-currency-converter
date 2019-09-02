@@ -6,7 +6,6 @@
           <div class="slds-text-heading_medium">
             1. Select the opportunity data
           </div>
-          <lightning-record-edit-form object-api-name="Opportunity">
             <div class="slds-m-around_medium">
               <lightning-input
                 type="number"
@@ -14,6 +13,7 @@
                 formatter="currency"
                 step="0.01"
                 onchange={handleAmount}
+                message-when-value-missing="Amount is mandatory to create Opportunities"
                 required
               ></lightning-input>
               <template if:true={StagePicklistValues.data}>
@@ -22,6 +22,7 @@
                   placeholder="Select Stage"
                   options={StagePicklistValues.data.values}
                   onchange={handleStage}
+                  message-when-value-missing="Stage is mandatory to create Opportunities"
                   required
                 ></lightning-combobox>
               </template>
@@ -29,28 +30,10 @@
                 type="date"
                 label="Close Date"
                 onchange={handleDate}
+                message-when-value-missing="Close Date is mandatory to create Opportunities"
                 required
               ></lightning-input>
             </div>
-          </lightning-record-edit-form>
-          <!-- <lightning-input
-            label="Amount"
-            class="slds-m-top_medium"
-            name="amount"
-            onchange={handleChange}
-          ></lightning-input>
-          <lightning-input
-            label="Stage"
-            class="slds-m-top_medium"
-            name="stage"
-            onchange={handleChange}
-          ></lightning-input>
-          <lightning-input
-            label="Closed Date"
-            class="slds-m-top_medium"
-            name="date"
-            onchange={handleChange}
-          ></lightning-input> -->
         </div>
         <c-account-list
           selected-accounts-map={selectedAccountsMap}
@@ -73,6 +56,7 @@
           accounts={selectedAccounts}
           style-preview={stylePreviewChild}
           onremove={handleRemoveEvent}
+          onvalidate={showErrorsValidation}
         ></c-preview-opportunities>
       </div>
     </div>

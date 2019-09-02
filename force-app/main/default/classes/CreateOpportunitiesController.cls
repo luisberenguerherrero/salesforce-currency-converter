@@ -10,11 +10,17 @@ public with sharing class CreateOpportunitiesController {
         }else{
             querySearch='%'+querySearch+'%';
         }
-        Integer offset=page*recordsPerPage;
+        Integer offset=(page-1)*recordsPerPage;
         AccountsResponse response=new AccountsResponse();
         response.accounts=[SELECT Id, Name FROM Account WHERE Name LIKE :querySearch ORDER BY Name LIMIT :recordsPerPage OFFSET :offset];
-        response.total_count=[SELECT Count() FROM Account];
-        response.number_pages=response.total_count/recordsPerPage;
+        response.total_count=[SELECT Count() FROM Account WHERE Name LIKE :querySearch];
+        if(response.total_count==0){
+            response.number_pages=1;
+        }
+        else{
+            response.number_pages=Integer.valueOf(Math.ceil(Decimal.valueOf(response.total_count)/Decimal.valueOf(recordsPerPage)));
+        }
+
         return response;
     }
 

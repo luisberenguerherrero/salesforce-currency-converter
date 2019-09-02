@@ -4,13 +4,20 @@ import getAccounts from "@salesforce/apex/CreateOpportunitiesController.getAccou
 const accountsPerPage = 5;
 const columns = [{ label: "Account Name", fieldName: "Name" }];
 
+const SEARCH_DELAY = 300;
+
 export default class AccountList extends LightningElement {
   columns = columns;
   isRenderCallbackActionExecuted = false;
-  @track page = 1;
+  page = 1;
+  querySearch = '';
   @track selectedRows = [];
-  @track accounts = [];
-  @track number_pages;
+  accounts = [];
+  number_pages;
+  @track loading=true;
+
+  inputValue;
+
 
   @api
   get selectedAccountsMap() {
@@ -24,22 +31,56 @@ export default class AccountList extends LightningElement {
   @wire(getAccounts, {
     page: "$page",
     recordsPerPage: accountsPerPage,
-    querySearch: ""
+    querySearch: "$querySearch"
   })
   wiredValue({ error, data }) {
     if (data) {
       this.accounts = data.accounts;
       this.number_pages = data.number_pages;
+      this.selectedRows = [...this.selectedAccountsMap.keys()];
+      this.loading=false;
+      //this.selectedRows = [...this.selectedAccountsMap.keys()];
     } else if (error) {
       console.error(error);
     }
   }
+  handleFilter(event) {
+
+    this.inputValue = event.target.value;
+    if (this.inputValue.length === 0) {
+      this.paginating = true;
+      this.isRenderCallbackActionExecuted = false;
+      this.loading=true;
+      this.page = 1;
+      this.querySearch = '';
+    } else {
+      // Apply search throttling (prevents search if user is still typing)
+      if (this.searchThrottlingTimeout) {
+        clearTimeout(this.searchThrottlingTimeout);
+      }
+      // eslint-disable-next-line @lwc/lwc/no-async-operation
+      this.searchThrottlingTimeout = setTimeout(() => {
+        // Send search event if search term is long enougth
+        this.paginating = true;
+        this.isRenderCallbackActionExecuted = false;
+        this.loading=true;
+        this.page = 1;
+        this.querySearch = this.inputValue;
+        this.searchThrottlingTimeout = null;
+      },
+        SEARCH_DELAY
+      );
+    }
+  }
+
 
   selectAccount(event) {
     this.isRenderCallbackActionExecuted = false;
+    console.log('SELECTING');
     if (!this.paginating) {
+      console.log('NOT PAGINATING');
       const selectedRows = event.detail.selectedRows;
-
+      console.log(JSON.parse(JSON.stringify(selectedRows)));
       this.accounts.forEach(account => {
         if (selectedRows.findIndex(x => x.Id === account.Id) >= 0) {
           this.selectedAccountsMap.set(account.Id, account);
@@ -60,6 +101,8 @@ export default class AccountList extends LightningElement {
   }
 
   renderedCallback() {
+    console.log('CALLBACK');
+
     if (this.isRenderCallbackActionExecuted) {
       this.paginating = false;
       return;
@@ -71,28 +114,34 @@ export default class AccountList extends LightningElement {
   first() {
     this.paginating = true;
     this.isRenderCallbackActionExecuted = false;
+    this.loading=true;
     this.page = 1;
   }
   back() {
     this.paginating = true;
     this.isRenderCallbackActionExecuted = false;
+    this.loading=true;
     this.page--;
   }
   next() {
     this.paginating = true;
     this.isRenderCallbackActionExecuted = false;
+    this.loading=true;
     this.page++;
   }
   last() {
     this.paginating = true;
     this.isRenderCallbackActionExecuted = false;
+    this.loading=true;
     this.page = this.number_pages;
   }
 
+
+
   get disabledBackwardButtons() {
-    return this.page === 1;
+    return this.loading || this.page === 1;
   }
   get disabledForwardButtons() {
-    return this.page === this.number_pages;
+    return this.loading || this.page === this.number_pages;
   }
 }

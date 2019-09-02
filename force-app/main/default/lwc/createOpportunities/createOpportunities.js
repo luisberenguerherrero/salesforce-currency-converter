@@ -57,6 +57,20 @@ export default class CreateOpportunities extends LightningElement {
     this.selectedAccounts = [...this.selectedAccountsMap.values()];
   }
 
+  showErrorsValidation() {
+    const inputsValid = [...this.template.querySelectorAll('lightning-input')]
+      .reduce((validSoFar, inputCmp) => {
+        inputCmp.reportValidity();
+        return validSoFar && inputCmp.checkValidity();
+      }, true);
+    const selectValid = [...this.template.querySelectorAll('lightning-combobox')]
+      .reduce((validSoFar, inputCmp) => {
+        inputCmp.reportValidity();
+        return validSoFar && inputCmp.checkValidity();
+      }, true);
+
+  }
+
   get stylePreview() {
     let height = window.innerHeight - 500;
     return `height: ${height}px; min-height: 400px`;
