@@ -58,17 +58,18 @@ export default class CreateOpportunities extends LightningElement {
   }
 
   showErrorsValidation() {
-    const inputsValid = [...this.template.querySelectorAll('lightning-input')]
-      .reduce((validSoFar, inputCmp) => {
-        inputCmp.reportValidity();
-        return validSoFar && inputCmp.checkValidity();
-      }, true);
-    const selectValid = [...this.template.querySelectorAll('lightning-combobox')]
-      .reduce((validSoFar, inputCmp) => {
-        inputCmp.reportValidity();
-        return validSoFar && inputCmp.checkValidity();
-      }, true);
-
+    const inputsValid = [
+      ...this.template.querySelectorAll("lightning-input")
+    ].reduce((validSoFar, inputCmp) => {
+      inputCmp.reportValidity();
+      return validSoFar && inputCmp.checkValidity();
+    }, true);
+    const selectValid = [
+      ...this.template.querySelectorAll("lightning-combobox")
+    ].reduce((validSoFar, inputCmp) => {
+      inputCmp.reportValidity();
+      return validSoFar && inputCmp.checkValidity();
+    }, true);
   }
 
   get stylePreview() {

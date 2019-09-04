@@ -4,6 +4,7 @@ import saveOpportunities from "@salesforce/apex/CreateOpportunitiesController.sa
 export default class PreviewOpportunities extends LightningElement {
   @track opportunitiesPreview = [];
   @track saveResults = [];
+  @track loading = false;
   errors = 0;
   successes = 0;
   errorMessages = new Map();
@@ -52,24 +53,26 @@ export default class PreviewOpportunities extends LightningElement {
   }
 
   handleClick() {
-    if(!this.emptyParams){
-      saveOpportunities({ opportunities: this.opportunitiesPreview })
-      .then(result => {
-        this.saveResults = result;
-        const errorData = result.filter(x => !x.success);
-        this.errors = errorData.length;
-        this.successes = result.length - this.errors;
-        this.showPopup = true;
-        console.log("SUCCESSES: " + this.successes);
-        console.log("ERRORS: " + this.errors);
-      })
-      .catch(error => {
-        console.error(error);
-      });
-    }
-    else{
-      const validate = new CustomEvent("validate");
-      this.dispatchEvent(validate);
+    if (!this.emptyAccounts) {
+      if (!this.emptyParams) {
+        this.loading = true;
+        saveOpportunities({ opportunities: this.opportunitiesPreview })
+          .then(result => {
+            this.saveResults = result;
+            const errorData = result.filter(x => !x.success);
+            this.errors = errorData.length;
+            this.successes = result.length - this.errors;
+            this.showPopup = true;
+            this.loading = false;
+          })
+          .catch(error => {
+            console.error(error);
+            this.loading = false;
+          });
+      } else {
+        const validate = new CustomEvent("validate");
+        this.dispatchEvent(validate);
+      }
     }
   }
 
@@ -78,7 +81,10 @@ export default class PreviewOpportunities extends LightningElement {
     // eslint-disable-next-line guard-for-in
     for (const i in this.saveResults) {
       if (!this.saveResults[i].success) {
-        this.errorMessages.set(this.opportunitiesPreview[i].AccountId, this.saveResults[i].error);
+        this.errorMessages.set(
+          this.opportunitiesPreview[i].AccountId,
+          this.saveResults[i].error
+        );
       } else if (this.saveResults[i].success) {
         successPreview.push(this.opportunitiesPreview[i].AccountId);
         this.errorMessages.delete(this.opportunitiesPreview[i].AccountId);
@@ -92,7 +98,7 @@ export default class PreviewOpportunities extends LightningElement {
     this.showPopup = false;
   }
 
-/*   get hasOpportunitiesPreview(){
+  /*   get hasOpportunitiesPreview(){
     return this.opportunitiesPreview && this.opportunitiesPreview.length>0;
   }
  */
@@ -113,9 +119,14 @@ export default class PreviewOpportunities extends LightningElement {
     }
     return `${this.successes} Opportunities created successfully`;
   }
-  
-  get emptyParams(){
-    return ((this.opportunityData.amount==='' || !this.opportunityData.amount) || (this.opportunityData.stage==='' || !this.opportunityData.stage) || (this.opportunityData.date==='' || !this.opportunityData.date));
+
+  get emptyParams() {
+    return (
+      this.opportunityData.amount === "" ||
+      !this.opportunityData.amount ||
+      (this.opportunityData.stage === "" || !this.opportunityData.stage) ||
+      (this.opportunityData.date === "" || !this.opportunityData.date)
+    );
   }
 
   get emptyAccounts() {

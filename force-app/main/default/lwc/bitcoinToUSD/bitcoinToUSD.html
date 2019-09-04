@@ -1,33 +1,70 @@
 <template>
-
-    <lightning-card variant="Narrow">
-        <div if:true={oneBitcoinUSDValue} class="container">
-            <div class="slds-align_absolute-center header">
-                <div class="slds-text-heading_small slds-m-vertical_x-small custom_rem_title">BITCOIN VALUE: {oneBitcoinUSDValue} $</div>
-                <div class="slds-text-title slds-m-vertical_x-small">Last value update at {lastUpdatedDate}</div>
-            </div>
-            <div class="slds-align_absolute-center">
-                <div class="slds-form-element slds-m-horizontal_medium">
-                    <label class="slds-form-element__label custom_rem_label" for="input_bitcoin">Bitcoin value</label>
-                    <div class="slds-form-element__control">
-                        <input type="text" id="input_bitcoin" class="slds-input"
-                            value={bitcoinValue} onkeyup={handleBitcoinChange} onchange={handleBitcoinChange} />
-                    </div>
-                </div>
-                <div class="slds-text-heading_large slds-m-right_medium slds-m-bottom_xx-small currency_text">BTC</div>
-                <div class="slds-text-heading_large slds-m-bottom_xx-small currency_text">=</div>
-                <div class="slds-form-element slds-m-horizontal_medium">
-                    <label class="slds-form-element__label custom_rem_label" for="input_usd">USD value</label>
-                    <div class="slds-form-element__control">
-                        <input type="text" id="input_usd" class="slds-input"
-                            value={usdValue} onkeyup={handleUSDChange} onchange={handleUSDChange} />
-                    </div>
-                </div>
-                <div class="slds-text-heading_large slds-m-right_medium slds-m-bottom_xx-small currency_text">USD</div>
-            </div>
+  <lightning-card variant="Narrow">
+    <div if:true={oneBitcoinUSDValue} class="container">
+      <div class="slds-align_absolute-center header">
+        <div
+          class="slds-text-heading_small slds-m-vertical_x-small custom_rem_title"
+        >
+          BITCOIN VALUE: {oneBitcoinUSDValue} $
         </div>
-        <div if:true={error}>
-            FATAL ERROR: {error}
+        <div class="slds-text-title slds-m-vertical_x-small">
+          Last value update at {lastUpdatedDate}
         </div>
-    </lightning-card>
+      </div>
+      <div class="slds-align_absolute-center">
+        <div class="slds-form-element slds-m-horizontal_medium">
+          <label
+            class="slds-form-element__label custom_rem_label"
+            for="input_bitcoin"
+            >Bitcoin value</label
+          >
+          <div class="slds-form-element__control">
+            <input
+              type="text"
+              id="input_bitcoin"
+              class="slds-input"
+              value={bitcoinValue}
+              onkeyup={handleBitcoinChange}
+              onchange={handleBitcoinChange}
+            />
+          </div>
+        </div>
+        <div
+          class="slds-text-heading_large slds-m-right_medium slds-m-bottom_xx-small currency_text"
+        >
+          BTC
+        </div>
+        <div
+          class="slds-text-heading_large slds-m-bottom_xx-small currency_text"
+        >
+          =
+        </div>
+        <div class="slds-form-element slds-m-horizontal_medium">
+          <label
+            class="slds-form-element__label custom_rem_label"
+            for="input_usd"
+            >USD value</label
+          >
+          <div class="slds-form-element__control">
+            <input
+              type="text"
+              id="input_usd"
+              class="slds-input"
+              value={usdValue}
+              onkeyup={handleUSDChange}
+              onchange={handleUSDChange}
+            />
+          </div>
+        </div>
+        <div
+          class="slds-text-heading_large slds-m-right_medium slds-m-bottom_xx-small currency_text"
+        >
+          USD
+        </div>
+      </div>
+    </div>
+    <div if:true={error}>
+      FATAL ERROR: {error}
+    </div>
+  </lightning-card>
 </template>

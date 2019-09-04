@@ -1,35 +1,36 @@
-.container{
-    min-height: 15rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+.container {
+  min-height: 15rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
-.header{
-    width: 60rem;
-    max-width: 95%;
-    display: flex;
-    flex-direction: column;
+.header {
+  width: 60rem;
+  max-width: 95%;
+  display: flex;
+  flex-direction: column;
 }
-.custom_rem_title{
-    font-size: 1.5rem;
-    color: rgb(62, 62, 60);
+.custom_rem_title {
+  font-size: 1.5rem;
+  color: rgb(62, 62, 60);
 }
-.custom_rem_label{
-    font-size: 1rem;
+.custom_rem_label {
+  font-size: 1rem;
 }
-.currency_text{
-    align-self: flex-end;
-    color: rgb(62, 62, 60);
+.currency_text {
+  align-self: flex-end;
+  color: rgb(62, 62, 60);
 }
-input{ 
-    font-size:30px;
-    text-align: center;
-    color: rgb(62, 62, 60);
+input {
+  font-size: 30px;
+  text-align: center;
+  color: rgb(62, 62, 60);
 }
-input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 input[type="number"] {
-    -moz-appearance: textfield;
+  -moz-appearance: textfield;
 }

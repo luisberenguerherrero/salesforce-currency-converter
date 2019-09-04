@@ -4,7 +4,7 @@
       2. Select for which accounts create opportunities
     </div>
     <div class="slds-m-top_x-small manage_table">
-        <lightning-input
+      <lightning-input
         type="search"
         placeholder="Filter this list"
         variant="label-hidden"
@@ -51,7 +51,11 @@
       </lightning-layout>
     </div>
     <div class="slds-m-top_x-small" style="position: relative">
-        <lightning-spinner if:true={loading} alternative-text="Loading" size="small"></lightning-spinner>
+      <lightning-spinner
+        if:true={loading}
+        alternative-text="Loading"
+        size="small"
+      ></lightning-spinner>
       <lightning-datatable
         key-field="Id"
         data={accounts}

@@ -2,6 +2,11 @@
   background-color: white;
   overflow-y: scroll;
 }
+.log_row {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
 .status {
   display: flex;
   justify-content: center;

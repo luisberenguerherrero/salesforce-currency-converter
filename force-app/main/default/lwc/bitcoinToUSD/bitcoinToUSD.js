@@ -9,27 +9,30 @@ export default class BitcoinToUSD extends LightningElement {
   wiredValue({ error, data }) {
     if (data) {
       this.oneBitcoinUSDValue = data;
-      this.usdValue=this.oneBitcoinUSDValue;
-      this.lastUpdatedDate=new Date().toLocaleString();
+      this.usdValue = this.oneBitcoinUSDValue;
+      this.lastUpdatedDate = new Date().toLocaleString();
       this.saveData();
       this.error = undefined;
-    } 
+    } else if (error) {
     /** If an error occurs, we retrieve the latest value retrieved successfully from Bitpay,
     in order to give the user a recovery solution*/
-    else if (error) {
-      getOneBitcoinUSDValueFromDatabase().then(result=>{
-        this.oneBitcoinUSDValue = result.Value__c;
-        this.usdValue=this.oneBitcoinUSDValue;
-        this.lastUpdatedDate=new Date(result.LastModifiedDate).toLocaleString();
-        this.error = undefined;
-      }).catch(()=>{
-        this.error = 'Unknown error';
-        if (Array.isArray(error.body)) {
-          this.error = error.body.map(e => e.message).join(', ');
-        } else if (typeof error.body.message === 'string') {
-          this.error = error.body.message;
-        }
-      });
+      getOneBitcoinUSDValueFromDatabase()
+        .then(result => {
+          this.oneBitcoinUSDValue = result.Value__c;
+          this.usdValue = this.oneBitcoinUSDValue;
+          this.lastUpdatedDate = new Date(
+            result.LastModifiedDate
+          ).toLocaleString();
+          this.error = undefined;
+        })
+        .catch(() => {
+          this.error = "Unknown error";
+          if (Array.isArray(error.body)) {
+            this.error = error.body.map(e => e.message).join(", ");
+          } else if (typeof error.body.message === "string") {
+            this.error = error.body.message;
+          }
+        });
     }
   }
   @track oneBitcoinUSDValue;
@@ -39,23 +42,33 @@ export default class BitcoinToUSD extends LightningElement {
   @track lastUpdatedDate;
 
   handleUSDChange(event) {
-    this.usdValue=event.target.value;
-    let usdNumber=this.usdValue.length===0?0:parseFloat(event.target.value.replace(',', '.'));
-    this.bitcoinValue = Math.round((usdNumber / this.oneBitcoinUSDValue)*1000000)/1000000;
+    this.usdValue = event.target.value;
+    let usdNumber =
+      this.usdValue.length === 0
+        ? 0
+        : parseFloat(event.target.value.replace(",", "."));
+    this.bitcoinValue =
+      Math.round((usdNumber / this.oneBitcoinUSDValue) * 1000000) / 1000000;
   }
 
   handleBitcoinChange(event) {
-    this.bitcoinValue=event.target.value;
-    let bitcoinNumber=this.bitcoinValue.length===0?0:parseFloat(event.target.value.replace(',', '.'));
-    this.usdValue = Math.round(bitcoinNumber * this.oneBitcoinUSDValue * 100) / 100;
+    this.bitcoinValue = event.target.value;
+    let bitcoinNumber =
+      this.bitcoinValue.length === 0
+        ? 0
+        : parseFloat(event.target.value.replace(",", "."));
+    this.usdValue =
+      Math.round(bitcoinNumber * this.oneBitcoinUSDValue * 100) / 100;
   }
 
   get oneUSDBitcoinValue() {
     return 1 / this.oneBitcoinUSDValue;
   }
 
-  saveData(){
-    saveCurrencyValue({currencyName : 'USD', value: this.oneBitcoinUSDValue}).then(()=>{
-    });
+  saveData() {
+    saveCurrencyValue({
+      currencyName: "USD",
+      value: this.oneBitcoinUSDValue
+    }).then(() => {});
   }
 }
